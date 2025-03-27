@@ -1,0 +1,51 @@
+{% load static %}
+
+<nav class="navbar">
+	<a href="{% url 'home' %}" class="navbar-brand">
+		<div class="navbar-left">
+		<img 
+			class="logo"
+			src="{% static 'mysite/assets/logo.png' %}" 
+			alt="HoosHomeless Logo"
+		/>
+		<span class="logotext">HoosHomeless</span>
+		</div>
+	</a>
+
+	<!-- Hamburger menu icon -->
+	<div class="hamburger">
+	  <span class="bar"></span>
+	  <span class="bar"></span>
+	  <span class="bar"></span>
+	</div>
+
+	<div class="navbar-right">
+	  <a href="{% url 'listing_service:property_listing' %}" class="nav-item">Listings</a>
+	  <a href="{% url 'listing_service:collection_listing' %}" class="nav-item">Collections</a>
+	  {% comment %} <a href="{% url 'community' %}" class="nav-item">Community</a> {% endcomment %}
+	  {% if user.is_authenticated %}
+		<div class="dropdown">
+		  <button class="dropbtn">
+			{% if user.profile_image %}
+			  <img src="{{ user.profile_image }}" class="profile-pic" alt="Profile Picture">
+			{% else %}
+			  <img src="{% static 'mysite/assets/default-profile.png' %}" class="profile-pic" alt="Default Profile">
+			{% endif %}
+
+			{% if user.username %}
+			  <span>{{ user.username }}</span>
+			{% else %}
+			  <span>NameError</span>
+			{% endif %}
+		  </button>
+		  <div class="dropdown-content">
+			<a href="{% url 'user_service:edit_profile' %}">Edit Profile</a>
+			<a href="#">Collections</a>
+			<a href="{% url 'account_logout' %}">Sign Out</a>
+		  </div>
+		</div>
+	  {% else %}
+		<a href="{% url 'account_login' %}" class="nav-item">Sign In</a>
+	  {% endif %}
+	</div>
+  </nav>    

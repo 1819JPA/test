@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Profile</title>
+  </head>
+  <body>
+    <h1>Edit Profile</h1>
+    <form method="post" enctype="multipart/form-data" action="{% url 'user_service:edit_profile' %}">
+      {% csrf_token %}
+
+      <span>Current username: {{ user.username }}</span><br />
+      <span>Current email: {% if user.email %}{{ user.email }}{% else %}Not provided{% endif %}</span><br />
+
+      <!-- Username input -->
+      <label for="username">New Username:</label>
+      <input type="text" name="username" id="username" value="{{ user.username }}" /><br />
+
+      <!-- Password input -->
+      <label for="password">New Password:</label>
+      <input type="password" id="newPassword" name="password" />
+      <button type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()">Show</button><br />
+
+      <!-- Confirm Password input -->
+      <label for="confirm_password">Confirm New Password:</label>
+      <input type="password" id="confirmNewPassword" name="confirm_password" /><br />
+
+      <!-- Profile Image Upload -->
+      <label for="profileImage">Upload Profile Image:</label>
+      <input type="file" id="profileImage" name="profile_image" accept="image/*" onchange="previewImage(event)" /><br />
+
+      <!-- Profile Image Preview -->
+      {% if user.profile_image %}
+        <img id="profileImagePreview" src="{{ user.profile_image }}" alt="Profile Image"
+             style="display: block; width: 150px; height: 150px; object-fit: cover;" /><br />
+      {% else %}
+        <img id="profileImagePreview" style="display: none; width: 150px; height: 150px; object-fit: cover;" /><br />
+      {% endif %}
+
+      <button type="submit">Save Changes</button>
+    </form>
+
+    <a href="{% url 'home' %}"><button>Back to Home</button></a>
+
+    <script>
+      // Toggle password visibility
+      const passwordInput = document.getElementById("newPassword");
+      const confirmPasswordInput = document.getElementById("confirmNewPassword");
+      const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+
+      const togglePasswordVisibility = () => {
+        togglePasswordBtn.textContent =
+          togglePasswordBtn.textContent.trim() === "Show" ? "Hide" : "Show";
+        passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+        confirmPasswordInput.type = confirmPasswordInput.type === "password" ? "text" : "password";
+      };
+
+      // Preview uploaded image only if a new image is selected
+      const previewImage = (event) => {
+        const imagePreview = document.getElementById("profileImagePreview");
+        const file = event.target.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %} HoosHomeless - Property Listings {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'listing_service/css/listings.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Property Listings</h1>
+        {% if request.user.role == 'librarian' %}
+            <a class="btn btn-outline-secondary mb-4" href="{% url 'listing_service:add_property' %}">Add New
+                Property</a>
+        {% endif %}
+        <div class="row">
+            {% for property in properties %}
+                <div class="col-md-4 col-lg-3 mb-3">
+                    <a href="{% url 'listing_service:property_details' property.id %}"
+                       class="text-decoration-none text-dark">
+                        <div class="property-card">
+                            {% if property.image %}
+                                <img src="{{ property.image }}" alt="{{ property.title }}" class="property-img">
+                            {% else %}
+                                <img src="{% static 'mysite/assets/default-property.jpg' %}"
+                                     alt="Default Property Image" class="property-img">
+                            {% endif %}
+
+                            <div class="property-info">
+                                <h2 class="property-title">{{ property.title }}</h2>
+                                <p class="property-location">{{ property.location }}</p>
+
+                                <div class="property-rating">
+                                    <!-- Placeholder for ratings -->
+                                    <i class="fas fa-star">*</i>
+                                    <i class="fas fa-star">*</i>
+                                    <i class="fas fa-star">*</i>
+                                    <i class="fas fa-star">*</i>
+                                    <i class="far fa-star">*</i>
+                                    <small class="text-muted">(24)</small>
+                                </div>
+
+                                <p class="property-description">{{ property.description|truncatechars:25 }}</p>
+                                <p class="property-price">${{ property.price }} month</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">No properties available.</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

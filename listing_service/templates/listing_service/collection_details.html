@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block head_title %}Collection Details{% endblock %}
+
+{% block content %}
+<h1>{{ collection.title }}</h1>
+<p>{{ collection.description }}</p>
+<p>Created by: {{ collection.owner }}</p>
+<p>Private: {{ collection.private }}</p>
+
+<h2>Properties in this Collection:</h2>
+<ul>
+    {% for property in collection.properties.all %}
+    <li><a href="{% url 'listing_service:property_details' property.id %}">{{ property.title }}</a></li>
+    {% empty %}
+    <p>No properties in this collection.</p>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'listing_service:collection_listing' %}">Back to Collections</a>
+{% endblock %}

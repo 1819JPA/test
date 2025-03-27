@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <style>
+        #map {
+            width: 600px;
+            height: 450px;
+            border: 1px solid #ccc;
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Property Details</h1>
+    <h2>{{ details.title }}</h2>
+    <img src="{{ details.image }}" alt="{{ details.title }}" width="200" onerror="this.style.display='none'">
+    <p><strong>Property Type:</strong> {{ details.property_type }}</p>
+    <p><strong>Description:</strong> {{ details.description }}</p>
+    <p><strong>Location:</strong> {{ details.location }}</p>
+    <p><strong>Price:</strong> ${{ details.price }} per month</p>
+
+    <div id="map"></div>
+
+    <script>
+        var lat = "{{ details.lat|default:'' }}";
+        var lon = "{{ details.lon|default:'' }}";
+
+        if (!lat || !lon) {
+            lat = 0;
+            lon = 0;
+        } else {
+            lat = parseFloat(lat);
+            lon = parseFloat(lon);
+        }
+
+        if (lat !== 0 && lon !== 0) {
+            var map = L.map('map').setView([lat, lon], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup('{{ details.title }}')
+                .openPopup();
+        } else {
+            document.getElementById('map').innerHTML = "<p>Location not found</p>";
+        }
+    </script>
+</body>
+
+</html>

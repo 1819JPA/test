@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %}Create Collection{% endblock %}
+
+{% block content %}
+<h1>Create a New Collection</h1>
+
+<form method="POST" action="">
+  {% csrf_token %}
+  <label>Collection Title:</label>
+  <input type="text" name="title" required><br><br>
+
+  <label>Description:</label><br>
+  <textarea name="description" rows="4" cols="50" required></textarea><br><br>
+
+  {% if request.user.role == "librarian" %}
+  <label>Private:</label>
+  <input type="checkbox" name="private"><br><br>
+  {% endif %}
+
+  <label>Select Properties:</label><br>
+  {% for property in properties %}
+  <input type="checkbox" name="properties" value="{{ property.id }}">
+  {{ property.title }}<br>
+  {% endfor %}
+
+  <button type="submit">Create Collection</button>
+</form>
+
+<a href="{% url 'listing_service:collection_listing' %}">Back to Collections</a>
+{% endblock %}

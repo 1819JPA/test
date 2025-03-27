@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Librarian Dashboard</title>
+</head>
+
+<body>
+  <h1>Welcome Librarian!</h1>
+  <p>
+    Hi, {{ user.username }} ({{ user.email }})! You are logged in as a
+    Librarian.
+  </p>
+  <p>URL for Manage Users: {% url 'user_service:manage_users' %}</p>
+  <a href="{% url 'account_logout' %}"><button>Logout</button></a>
+  <a href="{% url 'user_service:edit_profile' %}"><button>Edit Profile</button></a>
+  <a href="{% url 'listing_service:add_property' %}"><button>Add Property</button></a>
+  <a href="{% url 'listing_service:property_listing' %}"><button>View Properties</button></a>
+
+  <a href="{% url 'user_service:manage_users' %}"><button>Manage Users</button></a>
+
+  <!-- Edit Profile button -->
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Patron Dashboard</title>
+</head>
+
+<body>
+  <h1>Welcome Patron!</h1>
+  <p>
+    Hi, {{ user.username }} {% if user.email %} {{ user.email }} {% endif %}!
+    You are logged in as a Patron.
+  </p>
+  <a href="{% url 'account_logout' %}"><button>Logout</button></a>
+  <a href="{% url 'user_service:edit_profile' %}"><button>Edit Profile</button></a>
+<!--   <a href="{% url 'listing_service:add_property' %}"><button>Add Property</button></a> -->
+  <a href="{% url 'listing_service:property_listing' %}"><button>View Properties</button></a>
+
+</body>
+
+</html>
